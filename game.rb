@@ -38,19 +38,19 @@ class HumanPlayer
 
   def make_move(board)
 
-    puts "#{@color}: enter your move, starting with your piece, separated by commas: "
+    puts "#{@color}: enter your move(s), starting with your piece, separated by commas: "
     sequence = parse(gets.chomp)
 
-    raise "Not on the board" if !board.on_board?(sequence[0])
+    raise "Not on the board!" unless board.on_board?(sequence[0])
     if board[sequence[0]].nil? || board[sequence[0]].color != color
-      raise "Not one of your pieces"
+      raise "Not one of your pieces!"
     end
 
     piece = board[sequence.shift]
     piece.perform_moves(sequence)
 
   rescue InvalidMoveError
-    puts "Not a valid move"
+    puts "Not a valid move!"
     retry
   rescue => e
     puts e

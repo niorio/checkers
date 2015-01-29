@@ -20,17 +20,6 @@ class Piece
 
   def perform_slide(target)
 
-    x, y = @pos
-
-    valid_slides = []
-
-    move_diffs.each do |dx, dy|
-      new_pos = [x + dx, y + dy]
-      next unless @board.on_board?(new_pos)
-
-      valid_slides << new_pos if @board[new_pos].nil?
-    end
-
     return false unless valid_slides.include?(target)
 
     @board[target] = self
@@ -42,14 +31,45 @@ class Piece
 
   end
 
+  def valid_slides
+
+    x, y = @pos
+
+    valid_slides = []
+
+    move_diffs.each do |dx, dy|
+      new_pos = [x + dx, y + dy]
+      next unless @board.on_board?(new_pos)
+
+      valid_slides << new_pos if @board[new_pos].nil?
+    end
+
+    valid_slides
+
+  end
+
   def perform_jump(target)
 
-    opponent_color = (color == :red ? :black : :red)
+    return false unless valid_jumps.include?(target)
 
     x, y = @pos
     a, b = target
-
     enemy_pos = [ (x+a)/2, (y+b)/2 ]
+
+    @board[target] = self
+    @board[@pos] = nil
+    @board[enemy_pos] = nil
+    @pos = target
+
+    maybe_promote
+    true
+
+  end
+
+  def valid_jumps
+
+    opponent_color = (color == :red ? :black : :red)
+    x, y = @pos
 
     valid_jumps = []
 
@@ -67,15 +87,7 @@ class Piece
 
     end
 
-    return false unless valid_jumps.include?(target)
-
-    @board[target] = self
-    @board[@pos] = nil
-    @board[enemy_pos] = nil
-    @pos = target
-
-    maybe_promote
-    true
+    valid_jumps
 
   end
 
