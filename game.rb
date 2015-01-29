@@ -31,22 +31,25 @@ end
 
 if __FILE__ == $PROGRAM_NAME
 
+
+  def get_player(color)
+    puts "#{color}: Human(H) or Computer(C)?"
+    case gets.chomp.upcase
+    when "H"
+      return HumanPlayer.new(color)
+    when "C"
+      return ComputerPlayer.new(color)
+    else
+      get_player(color)
+    end
+  end
+
   players = Hash.new
 
-  puts "Black: Human (H) or Computer(C)?"
-  if gets.chomp.upcase == "H"
-    players[:black] = HumanPlayer.new(:black)
-  else
-    players[:black] = ComputerPlayer.new(:black)
-  end
-
-  puts "Red: Human (H) or Computer(C)?"
-  if gets.chomp.upcase == "H"
-    players[:red] = HumanPlayer.new(:red)
-  else
-    players[:red] = ComputerPlayer.new(:red)
-  end
+  players[:black] = get_player(:black)
+  players[:red] = get_player(:red)
 
   game = Game.new(players)
   game.play
+
 end

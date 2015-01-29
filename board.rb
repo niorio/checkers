@@ -47,6 +47,7 @@ class Board
     background = :light_black
 
     system 'clear'
+    
     puts "   a  b  c  d  e  f  g  h "
     @rows.each_with_index do |row, i|
       print "#{i+1} "

@@ -55,6 +55,8 @@ class ComputerPlayer
 
   def make_move(board)
 
+    sleep(0.5)
+
     my_pieces =board.pieces.select {|piece| piece.color == color}
 
     all_jump_moves = []
