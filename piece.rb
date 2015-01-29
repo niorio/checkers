@@ -10,8 +10,8 @@ class Piece
 
   attr_reader :color, :pos, :king
 
-  def initialize(color, board, pos)
-    @king = false
+  def initialize(color, board, pos, king = false)
+    @king = king
     @color = color
     @board = board
     @pos = pos

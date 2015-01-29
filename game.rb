@@ -15,13 +15,11 @@ class Game
 
   def play
     until board.game_over?
+
       current = (current == :black ? :red : :black)
-
       board.display
-      sequence = players[current].get_move(board)
+      players[current].make_move(board)
 
-      piece = board[sequence.shift]
-      piece.perform_moves(sequence)
     end
 
     puts "#{current}, you win!!"
@@ -38,7 +36,7 @@ class HumanPlayer
     @color = color
   end
 
-  def get_move(board)
+  def make_move(board)
 
     puts "#{@color}: enter your move, starting with your piece, separated by commas: "
     sequence = parse(gets.chomp)
@@ -48,15 +46,15 @@ class HumanPlayer
       raise "Not one of your pieces"
     end
 
+    piece = board[sequence.shift]
+    piece.perform_moves(sequence)
+
   rescue InvalidMoveError
     puts "Not a valid move"
     retry
   rescue => e
     puts e
     retry
-  else
-
-    sequence
 
   end
 
