@@ -42,9 +42,9 @@ class Board
 
 
   def display
-    puts "   0  1  2  3  4  5  6  7 "
+    puts "   a  b  c  d  e  f  g  h "
     @rows.each_with_index do |row, i|
-      print "#{i} "
+      print "#{i+1} "
       row.each do |space|
         if space.nil?
           print " _ "
@@ -79,5 +79,9 @@ class Board
 
   end
 
+  def game_over?
+    pieces.none? {|piece| piece.color == :b} ||
+    pieces.none? {|piece| piece.color == :r}
+  end
 
 end
