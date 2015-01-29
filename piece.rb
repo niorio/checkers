@@ -90,11 +90,25 @@ class Piece
 
   end
 
+  def perform_moves(move_sequence)
+
+    if valid_move_seq?(move_sequence)
+      perform_moves!(move_sequence)
+    else
+      raise InvalidMoveError
+    end
+    nil
+  end
+
   def perform_moves!(move_sequence)
 
     if move_sequence.count == 1
 
-      perform_slide(move_sequence.first) || perform_jump(move_sequence.first) 
+      if perform_slide(move_sequence.first)
+      elsif perform_jump(move_sequence.first)
+      else
+        raise InvalidMoveError
+      end
 
     else
 
