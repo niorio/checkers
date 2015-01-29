@@ -138,10 +138,10 @@ class Piece
 
   def render
 
-    if @king
-      @color == :black ? " ◉ " : " ◉ ".colorize(:red)
+    if king
+      color == :black ? " ◉ " : " ◉ ".colorize(:red)
     else
-      @color == :black ? " ● " : " ● ".colorize(:red)
+      color == :black ? " ● " : " ● ".colorize(:red)
     end
 
   end
