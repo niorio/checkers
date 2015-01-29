@@ -7,11 +7,13 @@ class Board
   end
 
   def [](pos)
+    raise "not on board" unless on_board?(pos)
     row, col = pos
     @rows[row][col]
   end
 
   def []=(pos, value)
+    raise "not on board" unless on_board?(pos)
     row, col = pos
     @rows[row][col] = value
   end
@@ -20,11 +22,16 @@ class Board
     self[pos] = piece
   end
 
+  def on_board?(pos)
+    pos.all? { |coord| coord.between?(0,7) }
+  end
+
+
 end
 
 class Piece
 
-  attr_reader :color, :pos
+  attr_reader :color, :pos, :king
 
   def initialize(color, board, pos)
     @king = false
@@ -50,6 +57,8 @@ class Piece
     @board[target] = self
     @board[@pos] = nil
     @pos = target
+
+    maybe_promote
 
   end
 
@@ -82,9 +91,21 @@ class Piece
     @board[enemy_pos] = nil
     @pos = target
 
+    maybe_promote
+
   end
 
+  def maybe_promote
+
+    finish_line = (color == :b ? 7 : 0)
+    @king = true if @pos[0] == finish_line
+
+  end
+
+
   def move_diffs
+
+    return [[1,1],[1,-1],[-1,1],[-1,-1]] if @king
 
     @color == :b ? [[1,1],[1,-1]] : [[-1,1],[-1,-1]]
 
