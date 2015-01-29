@@ -29,7 +29,9 @@ class Board
   end
 
   def display
-    @rows.each do |row|
+    puts "   0  1  2  3  4  5  6  7 "
+    @rows.each_with_index do |row, i|
+      print "#{i} "
       row.each do |space|
         if space.nil?
           print " _ "
@@ -39,7 +41,7 @@ class Board
       end
       puts
     end
-
+    nil
   end
 
   def populate

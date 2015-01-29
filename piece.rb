@@ -20,6 +20,8 @@ class Piece
 
     move_diffs.each do |dx, dy|
       new_pos = [x + dx, y + dy]
+      next unless @board.on_board?(new_pos)
+
       valid_slides << new_pos if @board[new_pos].nil?
     end
 
@@ -48,7 +50,7 @@ class Piece
       jump_over = [x + dx, y + dy]
       jump_to = [x + dx + dx, y + dy + dy]
 
-      next if @board[jump_over].nil?
+      next if @board[jump_over].nil? || !@board.on_board?(jump_to)
 
       if @board[jump_over].color == opponent_color && @board[jump_to].nil?
         valid_jumps << jump_to
@@ -84,7 +86,13 @@ class Piece
 
   def render
 
-    @color == :b ? " B " : " R "
+    if @king
+      @color == :b ? " B " : " R "
+    else
+      @color == :b ? " b " : " r "
+    end
+
+
   end
 
 end
