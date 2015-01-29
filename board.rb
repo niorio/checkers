@@ -1,4 +1,5 @@
 require_relative 'piece'
+require 'colorize'
 
 class Board
 
@@ -43,15 +44,19 @@ class Board
 
   def display
 
+    background = :light_black
+
     system 'clear'
     puts "   a  b  c  d  e  f  g  h "
     @rows.each_with_index do |row, i|
       print "#{i+1} "
+      background = background == :light_black ? :light_white : :light_black
       row.each do |space|
+        background = background == :light_black ? :light_white : :light_black
         if space.nil?
-          print " _ "
+          print "   ".colorize(:background => background)
         else
-          print space.render
+          print space.render.colorize(:background => background)
         end
       end
       puts

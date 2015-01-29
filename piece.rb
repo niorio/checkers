@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 require_relative 'board'
 require 'byebug'
+require 'colorize'
 
 class InvalidMoveError < StandardError
 end
@@ -125,9 +127,9 @@ class Piece
   def render
 
     if @king
-      @color == :black ? " B " : " R "
+      @color == :black ? " ◉ " : " ◉ ".colorize(:red)
     else
-      @color == :black ? " b " : " r "
+      @color == :black ? " ● " : " ● ".colorize(:red)
     end
 
   end
