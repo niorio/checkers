@@ -26,6 +26,20 @@ class Board
     pos.all? { |coord| coord.between?(0,7) }
   end
 
+  def display
+    @rows.each do |row|
+      row.each do |space|
+        if space.nil?
+          print " _ "
+        else
+          print space.render
+        end
+      end
+      puts
+    end
+
+  end
+
 
 end
 
@@ -109,6 +123,11 @@ class Piece
 
     @color == :b ? [[1,1],[1,-1]] : [[-1,1],[-1,-1]]
 
+  end
+
+  def render
+
+    @color == :b ? " B " : " R "
   end
 
 end
