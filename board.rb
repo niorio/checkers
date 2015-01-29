@@ -9,7 +9,7 @@ class Board
   end
 
   def [](pos)
-    raise "not on board" unless on_board?(pos)
+    raise "#{pos} is not on board" unless on_board?(pos)
     row, col = pos
     @rows[row][col]
   end
@@ -42,6 +42,8 @@ class Board
 
 
   def display
+
+    system 'clear'
     puts "   a  b  c  d  e  f  g  h "
     @rows.each_with_index do |row, i|
       print "#{i+1} "

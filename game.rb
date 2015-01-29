@@ -20,7 +20,7 @@ class Game
       sequence = players[current].get_move
 
       piece = board[sequence.shift]
-      piece.perform_moves[sequence]
+      piece.perform_moves(sequence)
     end
   end
 
@@ -33,7 +33,7 @@ class HumanPlayer
   end
 
   def get_move
-    puts "Enter you move, starting with your piece, separated by commas: "
+    puts "#{@color}: enter your move, starting with your piece, separated by commas: "
     parse(gets.chomp)
   end
 

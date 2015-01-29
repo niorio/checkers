@@ -43,7 +43,7 @@ class Piece
   def perform_jump(target)
 
     opponent_color = (color == :r ? :b : :r)
-    #debugger
+
     x, y = @pos
     a, b = target
 
@@ -52,14 +52,17 @@ class Piece
     valid_jumps = []
 
     move_diffs.each do |dx, dy|
+
       jump_over = [x + dx, y + dy]
       jump_to = [x + dx + dx, y + dy + dy]
 
-      next if @board[jump_over].nil? || !@board.on_board?(jump_to)
+      next unless @board.on_board?(jump_to)
+      next if @board[jump_over].nil?
 
       if @board[jump_over].color == opponent_color && @board[jump_to].nil?
         valid_jumps << jump_to
       end
+
     end
 
     return false unless valid_jumps.include?(target)
