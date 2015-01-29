@@ -28,6 +28,12 @@ class Board
     pos.all? { |coord| coord.between?(0,7) }
   end
 
+  # def dup
+  #   duped_board = Board.new(false)
+  #   pieces.each do |piece|
+  #     Piece.new()
+  #   
+
   def display
     puts "   0  1  2  3  4  5  6  7 "
     @rows.each_with_index do |row, i|

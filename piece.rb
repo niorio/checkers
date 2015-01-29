@@ -1,4 +1,8 @@
 require_relative 'board'
+require 'byebug'
+
+class InvalidMoveError < StandardError
+end
 
 class Piece
 
@@ -25,20 +29,21 @@ class Piece
       valid_slides << new_pos if @board[new_pos].nil?
     end
 
-    raise "not a valid move" unless valid_slides.include?(target)
+    return false unless valid_slides.include?(target)
 
     @board[target] = self
     @board[@pos] = nil
     @pos = target
 
     maybe_promote
+    true
 
   end
 
   def perform_jump(target)
 
     opponent_color = (color == :r ? :b : :r)
-
+    #debugger
     x, y = @pos
     a, b = target
 
@@ -57,7 +62,7 @@ class Piece
       end
     end
 
-    raise "not a valid move" unless valid_jumps.include?(target)
+    return false unless valid_jumps.include?(target)
 
     @board[target] = self
     @board[@pos] = nil
@@ -65,6 +70,7 @@ class Piece
     @pos = target
 
     maybe_promote
+    true
 
   end
 
@@ -84,6 +90,21 @@ class Piece
 
   end
 
+  def perform_moves!(move_sequence)
+
+    if move_sequence.count == 1
+      perform_slide(move_sequence.first) || perform_jump(move_sequence.first)
+
+    else
+      move_sequence.each do |move|
+        perform_jump(move) || return false
+      end
+
+    end
+    true
+
+  end
+
   def render
 
     if @king
@@ -92,7 +113,15 @@ class Piece
       @color == :b ? " b " : " r "
     end
 
-
   end
+
+  # def valid_move_seq?(move_sequence)
+  #
+  #   duped_board = @board.dup
+  #   dup_piece = duped_board[@pos]
+  #
+  #   dup_piece.perform_moves!(move_sequence) || raise InvalidMoveError
+  #
+  # end
 
 end
