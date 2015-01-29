@@ -66,7 +66,7 @@ class Board
     3.times do |r|
       div = (div == 1) ? 0 : 1
       8.times do |c|
-        Piece.new(:b, self, [r,c]) if c % 2 == div
+        Piece.new(:black, self, [r,c]) if c % 2 == div
       end
     end
 
@@ -75,15 +75,15 @@ class Board
     7.downto(5) do |r|
       div = (div == 1) ? 0 : 1
       8.times do |c|
-        Piece.new(:r, self, [r,c]) if c % 2 == div
+        Piece.new(:red, self, [r,c]) if c % 2 == div
       end
     end
 
   end
 
   def game_over?
-    pieces.none? {|piece| piece.color == :b} ||
-    pieces.none? {|piece| piece.color == :r}
+    pieces.none? {|piece| piece.color == :black} ||
+    pieces.none? {|piece| piece.color == :red}
   end
 
 end

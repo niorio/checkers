@@ -1,5 +1,6 @@
 require_relative 'board'
 require_relative 'piece'
+require 'byebug'
 
 class Game
 
@@ -7,8 +8,8 @@ class Game
 
   def initialize
     @board = Board.new
-    @players = {:black => HumanPlayer.new(:b),
-                :red => HumanPlayer.new(:r)}
+    @players = {:black => HumanPlayer.new(:black),
+                :red => HumanPlayer.new(:red)}
     @current = :red
   end
 
@@ -17,24 +18,46 @@ class Game
       current = (current == :black ? :red : :black)
 
       board.display
-      sequence = players[current].get_move
+      sequence = players[current].get_move(board)
 
       piece = board[sequence.shift]
       piece.perform_moves(sequence)
     end
+
+    puts "#{current}, you win!!"
+
   end
 
 end
 
 class HumanPlayer
 
+  attr_reader :color
+
   def initialize(color)
     @color = color
   end
 
-  def get_move
+  def get_move(board)
+
     puts "#{@color}: enter your move, starting with your piece, separated by commas: "
-    parse(gets.chomp)
+    sequence = parse(gets.chomp)
+
+    raise "Not on the board" if !board.on_board?(sequence[0])
+    if board[sequence[0]].nil? || board[sequence[0]].color != color
+      raise "Not one of your pieces"
+    end
+
+  rescue InvalidMoveError
+    puts "Not a valid move"
+    retry
+  rescue => e
+    puts e
+    retry
+  else
+
+    sequence
+
   end
 
   def parse(input)
@@ -50,5 +73,9 @@ class HumanPlayer
 
   end
 
+end
 
+if __FILE__ == $PROGRAM_NAME
+  game = Game.new
+  game.play
 end

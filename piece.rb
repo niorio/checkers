@@ -42,7 +42,7 @@ class Piece
 
   def perform_jump(target)
 
-    opponent_color = (color == :r ? :b : :r)
+    opponent_color = (color == :red ? :black : :red)
 
     x, y = @pos
     a, b = target
@@ -79,7 +79,7 @@ class Piece
 
   def maybe_promote
 
-    finish_line = (color == :b ? 7 : 0)
+    finish_line = (color == :black ? 7 : 0)
     @king = true if @pos[0] == finish_line
 
   end
@@ -89,7 +89,7 @@ class Piece
 
     return [[1,1],[1,-1],[-1,1],[-1,-1]] if @king
 
-    @color == :b ? [[1,1],[1,-1]] : [[-1,1],[-1,-1]]
+    @color == :black ? [[1,1],[1,-1]] : [[-1,1],[-1,-1]]
 
   end
 
@@ -125,9 +125,9 @@ class Piece
   def render
 
     if @king
-      @color == :b ? " B " : " R "
+      @color == :black ? " B " : " R "
     else
-      @color == :b ? " b " : " r "
+      @color == :black ? " b " : " r "
     end
 
   end
