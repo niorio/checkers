@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Board
 
   def initialize
@@ -22,6 +24,8 @@ end
 
 class Piece
 
+  attr_reader :color, :pos
+
   def initialize(color, board, pos)
     @king = false
     @color = color
@@ -34,7 +38,7 @@ class Piece
 
     x, y = @pos
 
-    valid_slides =[]
+    valid_slides = []
 
     move_diffs.each do |dx, dy|
       new_pos = [x + dx, y + dy]
@@ -50,23 +54,35 @@ class Piece
   end
 
   def perform_jump(target)
-    # x , y = @pos
-    #
-    # valid_jumps = []
-    #
-    # jump_diffs.each do |dx, dy|
-    #   new_pos = [x + dx, y + dy]
-    #
-    #
-    #
+
+    opponent_color = (color == :r ? :b : :r)
+
+    x, y = @pos
+    a, b = target
+
+    enemy_pos = [ (x+a)/2, (y+b)/2 ]
+
+    valid_jumps = []
+
+    move_diffs.each do |dx, dy|
+      jump_over = [x + dx, y + dy]
+      jump_to = [x + dx + dx, y + dy + dy]
+
+      next if @board[jump_over].nil?
+
+      if @board[jump_over].color == opponent_color && @board[jump_to].nil?
+        valid_jumps << jump_to
+      end
+    end
+
+    raise "not a valid move" unless valid_jumps.include?(target)
+
+    @board[target] = self
+    @board[@pos] = nil
+    @board[enemy_pos] = nil
+    @pos = target
+
   end
-  #
-  # def jump_diffs
-  #
-  #   @color == :r ? [[2,2],[2,-2]] : [[-2,2],[-2,-2]]
-  #
-  # end
-  #
 
   def move_diffs
 
