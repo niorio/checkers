@@ -93,16 +93,16 @@ class Piece
   def perform_moves!(move_sequence)
 
     if move_sequence.count == 1
-      perform_slide(move_sequence.first) || perform_jump(move_sequence.first)
+
+      perform_slide(move_sequence.first) || perform_jump(move_sequence.first) 
 
     else
+
       move_sequence.each do |move|
-        perform_jump(move) || return false
+        raise InvalidMoveError unless perform_jump(move)
       end
 
     end
-    true
-
   end
 
   def render
@@ -115,13 +115,18 @@ class Piece
 
   end
 
-  # def valid_move_seq?(move_sequence)
-  #
-  #   duped_board = @board.dup
-  #   dup_piece = duped_board[@pos]
-  #
-  #   dup_piece.perform_moves!(move_sequence) || raise InvalidMoveError
-  #
-  # end
+  def valid_move_seq?(move_sequence)
+
+    duped_board = @board.dup
+    dup_piece = duped_board[@pos]
+
+    begin
+      dup_piece.perform_moves!(move_sequence)
+    rescue InvalidMoveError
+      false
+    else
+      true
+    end
+  end
 
 end

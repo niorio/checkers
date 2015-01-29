@@ -28,11 +28,18 @@ class Board
     pos.all? { |coord| coord.between?(0,7) }
   end
 
-  # def dup
-  #   duped_board = Board.new(false)
-  #   pieces.each do |piece|
-  #     Piece.new()
-  #   
+  def pieces
+    @rows.flatten.compact
+  end
+
+  def dup
+    duped_board = Board.new(false)
+    pieces.each do |piece|
+      Piece.new(piece.color, duped_board, piece.pos)
+    end
+    duped_board
+  end
+
 
   def display
     puts "   0  1  2  3  4  5  6  7 "
