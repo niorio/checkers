@@ -7,10 +7,9 @@ class Game
 
   attr_reader :current, :board, :players
 
-  def initialize
+  def initialize(players)
     @board = Board.new
-    @players = {:black => HumanPlayer.new(:black),
-                :red => ComputerPlayer.new(:red)}
+    @players = players
     @current = :red
   end
 
@@ -31,6 +30,23 @@ class Game
 end
 
 if __FILE__ == $PROGRAM_NAME
-  game = Game.new
+
+  players = Hash.new
+
+  puts "Black: Human (H) or Computer(C)?"
+  if gets.chomp.upcase == "H"
+    players[:black] = HumanPlayer.new(:black)
+  else
+    players[:black] = ComputerPlayer.new(:black)
+  end
+
+  puts "Red: Human (H) or Computer(C)?"
+  if gets.chomp.upcase == "H"
+    players[:red] = HumanPlayer.new(:red)
+  else
+    players[:red] = ComputerPlayer.new(:red)
+  end
+
+  game = Game.new(players)
   game.play
 end
